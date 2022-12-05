@@ -123,7 +123,7 @@ find_image_version() {
 
     IMAGE_INFO=$(docker inspect "${IMAGE_ID}"  --format='{{json .Architecture}} {{json .Os}} {{json .Variant}}')
 
-    read -r ARCH OS VARIANT <<< $(ECHO "${IMAGE_INFO}") 
+    read -r ARCH OS VARIANT <<< $(echo "${IMAGE_INFO}") 
 
     ARCH="${ARCH:1:${#ARCH}-2}"
     OS="${OS:1:${#OS}-2}"
