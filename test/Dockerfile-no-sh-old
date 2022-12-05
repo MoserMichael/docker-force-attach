@@ -1,0 +1,8 @@
+FROM dokken/fedora-27
+
+RUN rm /bin/sh /bin/bash
+
+ENTRYPOINT [ "/bin/sleep", "infinity" ]
+
+
+
