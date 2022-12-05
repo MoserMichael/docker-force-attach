@@ -139,6 +139,11 @@ find_image_version() {
     fi
 
     TAR_FILE="${DIR}/bash-${OS}-${ARCH}.tar";
+
+    if [[ ! -f "${TAR_FILE}" ]]; then
+        echo "No shell downloaded for os: ${OS} architecture: ${ARCH}"
+        exit 1
+    fi
 }
 
 run_it() {
