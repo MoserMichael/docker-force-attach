@@ -153,15 +153,11 @@ attach_to_docker() {
     try_regular_attach
 
     if [[ ! -d "${DIR}" ]]; then
-       echo "force attach, first time init. Downloading statically linked bash shells..."
        mkdir ${DIR}
+    fi   
+    if [[ ! -f "${DIR}/download_completed" ]]; then  
        download_stuff "${DIR}" "robxu9" "bash-static"
        make_tars
-    else
-        if [[ ! -f "${DIR}/download_completed" ]]; then  
-           download_stuff "${DIR}" "robxu9" "bash-static"
-           make_tars
-        fi
     fi
     find_image_version
     run_it
