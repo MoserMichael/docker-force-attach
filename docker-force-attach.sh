@@ -7,7 +7,8 @@ cat <<EOF
 $0 DOCKER_ID
 
 Attach a shell on a given docker container
-If no shell is installed on the docker container, then download and copy an appropriate shell and run it.
+The script first tries to attach a shell with any one of the known shells, 
+If this fails, then a statically compiled bash shell executable is downloaded from github and copied to the running container.
 EOF
 exit 1
 }
@@ -16,6 +17,12 @@ CONTAINER_ID=$1
 if [[ "$CONTAINER_ID" == "" ]]; then
     Help
 fi
+
+TAR=tar
+if [[ $(uname) == "Darwin" ]]; then
+    TAR=gtar
+fi
+
 
 DIR="$HOME/.force-attach-shell"
 
@@ -69,7 +76,7 @@ download_stuff() {
 
     echo "Downloading shells..."
 
-    assert_bins_in_path "jq" "curl"
+    assert_bins_in_path "jq" "curl" "${TAR}"
 
     LATEST_TAG=$(curl -L -s -S  -H "Accept: application/json" "https://github.com/${USER}/${REPO}/releases/latest" | jq --raw-output .tag_name)
 
@@ -84,11 +91,6 @@ download_stuff() {
 make_tars() {
 
     echo "Prepare shells..."
-
-    TAR=tar
-    if [[ $(uname) == "Darwin" ]]; then
-        TAR=gtar
-    fi
 
     pushd "${DIR}"
     mkdir bin
@@ -145,6 +147,8 @@ run_it() {
 }
 
 attach_to_docker() {
+
+    assert_bins_in_path "docker"
     try_regular_attach
 
     if [[ ! -d "${DIR}" ]]; then
