@@ -7,7 +7,7 @@ cat <<EOF
 $0 DOCKER_ID
 
 Attach a shell on a given docker container
-If no shell is installed on the docker container, then copy an appropriate shell and run it.
+If no shell is installed on the docker container, then download and copy an appropriate shell and run it.
 EOF
 exit 1
 }
