@@ -40,6 +40,10 @@ try_regular_attach() {
         exit 0
     fi
 
+    if docker exec -it "${CONTAINER_ID}" '/bin/zsh'; then
+        exit 0
+    fi
+
     if docker exec -it "${CONTAINER_ID}" 'bash'; then
         exit 0
     fi
